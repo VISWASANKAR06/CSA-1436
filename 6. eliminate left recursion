@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 10 
+#define LEN 100 
+
+void removeLeftRecursion(char nonTerminal, char productions[MAX][LEN], int prodCount) {
+    char alpha[MAX][LEN], beta[MAX][LEN];
+    int alphaCount = 0, betaCount = 0;
+    for (int i = 0; i < prodCount; i++) {
+        if (productions[i][0] == nonTerminal) { // Left-recursive case: A → Aα
+            strcpy(alpha[alphaCount], productions[i] + 1); // Ignore first character (A)
+            alphaCount++;
+        } else { // Non-left-recursive case: A → β
+            strcpy(beta[betaCount], productions[i]);
+            betaCount++;
+        }
+    }
+
+    // If no left recursion exists, print original productions
+    if (alphaCount == 0) {
+        printf("%c -> ", nonTerminal);
+        for (int i = 0; i < prodCount; i++) {
+            printf("%s", productions[i]);
+            if (i < prodCount - 1) printf(" | ");
+        }
+        printf("\n");
+        return;
+    }
+
+    // Creating new productions
+    char newNonTerminal = nonTerminal + '\''; // A' for new rule
+    printf("%c -> ", nonTerminal);
+    for (int i = 0; i < betaCount; i++) {
+        printf("%s%c'", beta[i], newNonTerminal);
+        if (i < betaCount - 1) printf(" | ");
+    }
+    printf("\n");
+    printf("%c' -> ", newNonTerminal);
+    for (int i = 0; i < alphaCount; i++) {
+        printf("%s%c'", alpha[i], newNonTerminal);
+        if (i < alphaCount - 1) printf(" | ");
+    }
+    printf(" | ε\n"); 
+}
+
+int main() {
+    char nonTerminal;
+    int prodCount;
+    char productions[MAX][LEN];
+
+    
+    printf("Enter the non-terminal: ");
+    scanf(" %c", &nonTerminal);
+    
+    printf("Enter the number of productions: ");
+    scanf("%d", &prodCount);
+
+    printf("Enter the productions (Format: A->Aα or A->β):\n");
+    for (int i = 0; i < prodCount; i++) {
+        scanf("%s", productions[i]);
+    }
+
+    
+    removeLeftRecursion(nonTerminal, productions, prodCount);
+
+    return 0;
+}
