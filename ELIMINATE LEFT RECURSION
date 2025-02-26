@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <string.h>
+
+void eliminateLeftRecursion(char nonTerminal, char alpha[], char beta[]) {
+    printf("Grammar after eliminating left recursion:\n");
+    printf("%c -> %s%c'\n", nonTerminal, beta, nonTerminal);
+    printf("%c' -> %s%c' | ε\n", nonTerminal, alpha, nonTerminal);
+}
+
+int main() {
+    char nonTerminal = 'A';
+    char alpha[] = "x";  // Recursive part
+    char beta[] = "y";   // Non-recursive part
+
+    printf("Given Grammar:\n");
+    printf("%c -> %c%s | %s\n", nonTerminal, nonTerminal, alpha, beta);
+    eliminateLeftRecursion(nonTerminal, alpha, beta);
+    return 0;
+}
