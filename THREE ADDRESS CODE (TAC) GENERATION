@@ -1,0 +1,25 @@
+#include <stdio.h> #include <string.h>
+
+void generateTAC(char expr[]) { char tempVar = 'T';
+int tempIndex = 1; char op;
+int i, len = strlen(expr);
+
+
+printf("Three Address Code:\n");
+
+
+for (i = 0; i < len; i++) {
+if (expr[i] == '+' || expr[i] == '-' || expr[i] == '*' || expr[i] == '/') { op = expr[i];
+printf("%c%d = %c %c %c\n", tempVar, tempIndex, expr[i - 1], op, expr[i + 1]);
+ 
+expr[i + 1] = tempVar + tempIndex - '0'; tempIndex++;
+}
+}
+}
+
+
+int main() {
+char expr[50];
+printf("Enter arithmetic expression (e.g., a+b*c): "); scanf("%s", expr);
+generateTAC(expr); return 0;
+}
