@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#define MAX_ID_LEN 31 
+int isOperator(char ch) {
+    char operators[] = "+-*/%=<>&|^!";
+    for (int i = 0; i < strlen(operators); i++) {
+        if (ch == operators[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+int isKeyword(const char *str) {
+    char *keywords[] = {"int", "float", "char", "if", "else", "while", "for", "return", "void"};
+    int numKeywords = sizeof(keywords) / sizeof(keywords[0]);
+    for (int i = 0; i < numKeywords; i++) {
+        if (strcmp(str, keywords[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+void lexicalAnalyzer(const char *code) {
+    int i = 0;
+    char token[MAX_ID_LEN];
+    int tokenIndex = 0;
+    while (code[i] != '\0') {
+        if (isspace(code[i])) {
+            i++; // Ignore spaces, tabs, and new lines
+            continue;
+        }
+        if (isalpha(code[i]) || code[i] == '_') { 
+            tokenIndex = 0;
+            while (isalnum(code[i]) || code[i] == '_') {
+                if (tokenIndex < MAX_ID_LEN - 1)
+                    token[tokenIndex++] = code[i];
+                i++;
+            }
+            token[tokenIndex] = '\0';
+            if (isKeyword(token)) {
+                printf("Keyword: %s\n", token);
+            } else {
+                printf("Identifier: %s\n", token);
+            }
+        }
+        else if (isdigit(code[i])) { 
+            tokenIndex = 0;
+            while (isdigit(code[i])) {
+                token[tokenIndex++] = code[i];
+                i++;
+            }
+            token[tokenIndex] = '\0';
+            printf("Constant: %s\n", token);
+        }
+        else if (isOperator(code[i])) { 
+            printf("Operator: %c\n", code[i]);
+            i++;
+        }
+        else if (code[i] == '/' && code[i + 1] == '/') { 
+            while (code[i] != '\n' && code[i] != '\0') {
+                i++;
+            }
+        }
+        else if (code[i] == '/' && code[i + 1] == '*') { 
+            i += 2;
+            while (code[i] != '\0' && !(code[i] == '*' && code[i + 1] == '/')) {
+                i++;
+            }
+            if (code[i] != '\0') {
+                i += 2;
+            }
+        }
+        else { 
+            printf("Unknown: %c\n", code[i]);
+            i++;
+        }
+    }
+}
+int main() {
+    char code[] = "int a = 5; \na = a + 10;\n
+float b = 3.14;\n";
+    lexicalAnalyzer(code);
+    return 0;
+}
