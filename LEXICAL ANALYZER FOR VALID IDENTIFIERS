@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <ctype.h>
+
+void checkIdentifier(char str[]) {
+    if (!isalpha(str[0]) && str[0] != '_') {
+        printf("Invalid Identifier\n");
+        return;
+    }
+    int i = 1;
+    while (str[i] != '\0') {
+        if (!isalnum(str[i]) && str[i] != '_') {
+            printf("Invalid Identifier\n");
+            return;
+        }
+        i++;
+    }
+    printf("Valid Identifier\n");
+}
+
+int main() {
+    char id[] = "var1";
+    checkIdentifier(id);
+    return 0;
+}
