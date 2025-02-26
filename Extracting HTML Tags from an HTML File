@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+
+int main() {
+char str[] = "<html>\n<body>\n<h1>Title</h1>\n<p>Paragraph</p>\n</body>\n</html>\n";
+
+
+printf("Input HTML File:\n%s\n\n", str); printf("Output:\n");
+
+int inside_tag = 0;
+for (int i = 0; str[i] != '\0'; i++) { if (str[i] == '<') {
+inside_tag = 1; printf("Tag: ");
+}
+
+
+if (inside_tag) { printf("%c", str[i]);
+}
+
+
+if (str[i] == '>') { inside_tag = 0; printf("\n");
+}
+}
+
+
+return 0;
+}
