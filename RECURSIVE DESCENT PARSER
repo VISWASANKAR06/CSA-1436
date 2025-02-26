@@ -1,0 +1,77 @@
+#include <stdio.h> #include <stdlib.h> #include <string.h>
+
+char input[100]; // Input string
+int pos = 0;	// Pointer to track parsing position
+
+
+void E(); // Expression void EPrime();
+void T(); // Term void TPrime(); void F(); // Factor
+
+// Function to handle parsing errors void error() {
+printf("Error in parsing!\n"); exit(0);
+}
+
+
+// Function to match a character and move to the next void match(char expected) {
+if (input[pos] == expected) pos++;
+else
+error();
+}
+
+
+// E -> T E'
+void E() {
+T();
+EPrime();
+ 
+}
+
+
+// E' -> + T E' | ε void EPrime() {
+if (input[pos] == '+') { // If '+' is found match('+');
+T();
+EPrime();
+}
+}
+
+
+// T -> F T'
+void T() {
+F();
+TPrime();
+}
+
+
+// T' -> * F T' | ε void TPrime() {
+if (input[pos] == '*') { // If '*' is found match('*');
+F();
+TPrime();
+}
+}
+
+
+// F -> (E) | id (assuming 'id' starts with 'i') void F() {
+if (input[pos] == '(') { // If '(' is found match('(');
+E();
+ 
+match(')');
+} else if (input[pos] == 'i') { // Assuming 'id' is represented as 'i' match('i');
+} else {
+error();
+}
+}
+
+
+int main() {
+printf("Enter an expression: "); scanf("%s", input);
+
+E(); // Start parsing with E
+
+
+// If the entire input is parsed successfully if (input[pos] == '\0')
+printf("Parsing successful!\n"); else
+error();
+
+
+return 0;
+}
