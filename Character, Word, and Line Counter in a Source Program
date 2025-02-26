@@ -1,0 +1,24 @@
+#include <stdio.h> #include <ctype.h>
+
+int main() {
+char str[] = "#include <stdio.h>\nint main() {\n int a = 10;\n printf(\"Hello World\");\n return 0;\n}\n";
+int char_count = 0, word_count = 0, line_count = 1; int in_word = 0;
+
+printf("Input Source Program:\n%s\n\n", str);
+
+
+for (int i = 0; str[i] != '\0'; i++) { char_count++;
+
+if (str[i] == '\n') line_count++;
+
+
+if (isspace(str[i])) { in_word = 0;
+} else if (!in_word) { in_word = 1; word_count++;
+}
+}
+
+
+printf("Output:\nCharacters: %d\nWords: %d\nLines: %d\n", char_count, word_count, line_count);
+return 0;
+}
+ 
