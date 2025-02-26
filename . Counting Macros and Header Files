@@ -1,0 +1,15 @@
+#include <stdio.h> #include <string.h>
+ 
+int main() {
+char str[] = "#define PI 3.14\n#include<stdio.h>\n#include<conio.h>\nint main() { return 0; }\n"; int macro_count = 0, header_count = 0;
+
+printf("Input Source Program:\n%s\n\n", str);
+
+
+char *line = strtok(str, "\n"); while (line) {
+if (strncmp(line, "#define", 7) == 0) macro_count++; if (strncmp(line, "#include", 8) == 0) header_count++; line = strtok(NULL, "\n");
+}
+
+
+printf("Output:\nMacros: %d\nHeaders: %d\n", macro_count, header_count); return 0;
+}
