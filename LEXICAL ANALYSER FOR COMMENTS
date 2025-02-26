@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+B
+ool is_single_line_comment(const char *line) {
+    return strncmp(line, "//", 2) == 0;
+}
+
+bool is_multi_line_comment(const char *line) {
+    return strncmp(line, "/*", 2) == 0 && strstr(line, "*/") != NULL;
+}
+
+const char* check_comment(const char *line) {
+    if (is_single_line_comment(line)) {
+        return "Single-line comment";
+    } else if (is_multi_line_comment(line)) {
+        return "Multi-line comment";
+    } else {
+        return "Not a comment";
+    }
+}
+int main() {
+    const char *test_lines[] = {
+        "// This is a single-line comment",
+        "/* This is a multi-line comment */",
+        "int a = 10; // Variable declaration",
+        "printf(\"Hello World\");",
+        "/* Multi-line\n comment spanning\n multiple lines */"
+    };
+    
+    int num_tests = sizeof(test_lines) / sizeof(test_lines[0]);
+    for (int i = 0; i < num_tests; i++) {
+        printf("Input: %s\nOutput: %s\n\n", test_lines[i], check_comment(test_lines[i]));
+    }
+    
+    return 0;
+}
