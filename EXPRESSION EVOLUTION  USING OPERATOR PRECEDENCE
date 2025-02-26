@@ -1,0 +1,64 @@
+#include <stdio.h> #include <ctype.h> #include <stdlib.h>
+
+int precedence(char op) {
+if (op == '+' || op == '-') return 1; if (op == '*' || op == '/') return 2; if (op == '^') return 3;
+return 0;
+}
+
+
+int applyOp(int a, int b, char op) { switch (op) {
+case '+': return a + b; case '-': return a - b; case '*': return a * b;
+ 
+case '/': return a / b; case '^': {
+int res = 1;
+for (int i = 0; i < b; i++) res *= a; return res;
+}
+}
+return 0;
+}
+
+
+int evaluateExpression(char* expr) { int values[100], valTop = -1;
+char ops[100]; int opsTop = -1;
+
+for (int i = 0; expr[i] != '\0'; i++) { if (isdigit(expr[i])) {
+int val = 0;
+while (isdigit(expr[i])) {
+val = (val * 10) + (expr[i] - '0'); i++;
+}
+i--;
+values[++valTop] = val;
+} else if (expr[i] == '(') { ops[++opsTop] = expr[i];
+} else if (expr[i] == ')') {
+while (opsTop != -1 && ops[opsTop] != '(') { int b = values[valTop--];
+int a = values[valTop--]; char op = ops[opsTop--];
+ 
+values[++valTop] = applyOp(a, b, op);
+}
+opsTop--;
+} else {
+while (opsTop != -1 && precedence(ops[opsTop]) >= precedence(expr[i])) { int b = values[valTop--];
+int a = values[valTop--]; char op = ops[opsTop--];
+values[++valTop] = applyOp(a, b, op);
+}
+ops[++opsTop] = expr[i];
+}
+}
+
+
+while (opsTop != -1) {
+int b = values[valTop--]; int a = values[valTop--]; char op = ops[opsTop--];
+values[++valTop] = applyOp(a, b, op);
+}
+
+
+return values[valTop];
+}
+
+
+int main() {
+char expr[100];
+printf("Enter an expression: "); scanf("%s", expr);
+printf("Result: %d\n", evaluateExpression(expr)); return 0;
+}
+ 
