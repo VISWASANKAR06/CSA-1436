@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+void countSpaces(char str[]) {
+    int i = 0, spaces = 0, newlines = 0;
+    while (str[i] != '\0') {
+        if (str[i] == ' ') spaces++;
+        if (str[i] == '\n') newlines++;
+        i++;
+    }
+    printf("Spaces: %d, Newlines: %d\n", spaces, newlines);
+}
+
+int main() {
+    char input[] = "Hello \n World ";
+    countSpaces(input);
+    return 0;
+}
