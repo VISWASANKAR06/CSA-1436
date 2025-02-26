@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <string.h>
+
+void eliminateLeftFactoring(char nonTerminal, char common[], char diff1[], char diff2[]) {
+    printf("Grammar after eliminating left factoring:\n");
+    printf("%c -> %s%c'\n", nonTerminal, common, nonTerminal);
+    printf("%c' -> %s | %s\n", nonTerminal, diff1, diff2);
+}
+
+int main() {
+    char nonTerminal = 'A';
+    char common[] = "x";  // Common part
+    char diff1[] = "y";   // First alternative
+    char diff2[] = "z";   // Second alternative
+
+    printf("Given Grammar:\n");
+    printf("%c -> %s%s | %s%s\n", nonTerminal, common, diff1, common, diff2);
+    eliminateLeftFactoring(nonTerminal, common, diff1, diff2);
+    return 0;
+}
